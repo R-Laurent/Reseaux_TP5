@@ -9,7 +9,7 @@ public class StressNIO {
     public static void main(String[] args) throws IOException {
         float début = System.nanoTime();
         int i =0;
-        int n = 1;
+        int n = Integer.parseInt(args[0]);
         String str = "yo le s";
         while (i<n){
             InetSocketAddress adress = new InetSocketAddress("localhost",1234);
@@ -17,10 +17,11 @@ public class StressNIO {
             byte[] msg = str.getBytes();
             ByteBuffer buffer = ByteBuffer.wrap(msg);
             client.write(buffer);
+            //client.close();
             i++;
         }
         float fin = System.nanoTime();
         float temps = fin - début;
-        System.out.println("le temps mis est  : " + temps/1000000000);
+        System.out.println("le temps mis est  : " + temps/1000000000 + " pour : " + args[0]);
     }
 }

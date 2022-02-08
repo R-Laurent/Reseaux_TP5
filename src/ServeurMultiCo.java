@@ -1,4 +1,3 @@
-// source : https://crunchify.com/java-nio-non-blocking-io-with-server-client-example-java-nio-bytebuffer-and-channels-selector-java-nio-vs-io/
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -9,7 +8,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ServeurNIO {
+public class ServeurMultiCo {
     public static void main(String[] args) throws IOException {
         Selector selector = Selector.open();
         ServerSocketChannel serveurChannel = ServerSocketChannel.open();
@@ -25,19 +24,13 @@ public class ServeurNIO {
             while (iterator.hasNext()){
                 SelectionKey key = iterator.next();
                 if (key.isAcceptable()){
-                    int x = 0;
                     SocketChannel clientChannel = serveurChannel.accept();
                     clientChannel.configureBlocking(false);
                     clientChannel.register(selector,SelectionKey.OP_READ);
-                    ByteBuffer bf = ByteBuffer.allocate(100000);
+                    ByteBuffer bf = ByteBuffer.allocate(1000);
                     clientChannel.read(bf);
-                    bf.flip();
-                    while (bf.hasRemaining()){
-                        System.out.println(bf.get());
-                        x++;
-                    }
-                    //String result = new String(bf.array()).trim();
-                    System.out.println(x);
+                    String result = new String(bf.array()).trim();
+                    System.out.println(result);
                 }
                 iterator.remove();
             }
