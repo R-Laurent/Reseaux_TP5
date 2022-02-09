@@ -24,16 +24,24 @@ public class ServeurMultiCo {
             while (iterator.hasNext()){
                 SelectionKey key = iterator.next();
                 if (key.isAcceptable()){
+                    int x = 0;
                     SocketChannel clientChannel = serveurChannel.accept();
                     clientChannel.configureBlocking(false);
                     clientChannel.register(selector,SelectionKey.OP_READ);
                     ByteBuffer bf = ByteBuffer.allocate(1000);
-                    clientChannel.read(bf);
+                    if (key.isReadable()){
+                        clientChannel.read(bf);
+                        bf.flip();
+                        System.out.println(bf);
+                        String result = new String(bf.array()).trim();
+                        System.out.println(result);
+                    }
                     String result = new String(bf.array()).trim();
-                    System.out.println(result);
-                }
+                    System.out.println(x);
+
                 iterator.remove();
             }
         }
     }
+}
 }
