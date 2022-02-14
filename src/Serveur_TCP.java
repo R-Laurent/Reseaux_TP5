@@ -8,18 +8,20 @@ public class Serveur_TCP {
     public static void main(String[] args) throws IOException {
         ServerSocket s = new ServerSocket(1234);
         Socket c = s.accept();
-        PrintWriter out = new PrintWriter(c.getOutputStream(),true);
+        PrintWriter out = new PrintWriter(c.getOutputStream(), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
         int x = 0;
-        while(in.readLine() != null) {
-            String y = in.readLine();
-            System.out.println(y);
-            x++;
-            if(y == null){
+        String y;
+        while ((y = in.readLine()) != null) {
+            if (y == null) {
                 c.close();
                 s.close();
                 break;
             }
+            System.out.println(y);
+            out.println(y);
+            x++;
         }
+        System.out.println("le nombre de paquets reçu est : " + x);
     }
 }
